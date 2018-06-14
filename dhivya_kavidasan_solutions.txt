@@ -1,0 +1,47 @@
+1.
+
+Select title from Movie where director = 'Steven Spielberg';
+
+
+2.
+select m.year from Movie m, rating r on m.mID=r.mID and r.stars in (4, 5) order by year;
+
+
+3.
+select title from movie where mID not in (select distinct mID from rating);
+
+
+4.
+select name from reviewer where rID in (select rID from rating where ratingdate is null);
+
+
+5.
+select r.name,m.title,rt.stars, rt.ratingdate from reviewer r join rating rt join movie m on r.rID=rt.rID and m.mID=rt.mID order by r.name,m.title,rt.stars;
+
+
+6.
+select name from reviewer where rID in (select rID from rating having max(stars) group by rID);
+
+
+7.
+select m.title, a.stars_count from movie m join (select mID, max(stars) as stars_count from rating group by mID) a on m.mID=a.mID order by m.title;
+
+
+8.
+select m.title, a.ratingspread from movie m join (select mID,max(stars)-min(stars) as ratingspread from rating group by mID) a on m.mID = a.mID order by a.ratingspread,m.title;
+
+
+9.
+select b.avgafter-a.avgbefore as average_difference from (select avg(stars) as avgbefore, mID from rating r join movie m on r.mID = m.mID and year <1980)a join (select avg(stars) as avgafter,mID from rating r join movie m on r.mID = m.mID and year >1980) b on a.mID = b.mID;
+
+
+10.
+select name from reviewer r,rating rt,movie m on m.mID=rt.mID and rt.rID = r.rID and m.title = 'Gone with the Wind';
+
+
+11.
+select r.name,m.title,rt.stars from reviewer r join movie m join rating rt on r.rID=rt.rID and m.mID=rt.mID and r.name=m.director;
+
+
+12.
+select m.title,r.name from movie m, reviewer r order by title,name;
